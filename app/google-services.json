@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "478260429298",
+    "project_id": "togetherbphc",
+    "storage_bucket": "togetherbphc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478260429298:android:6d1f95d3a6d09191096b6b",
+        "android_client_info": {
+          "package_name": "com.example.togetherbphc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478260429298-gggmqaeul9ceo6kf14un3khndfi33hda.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.togetherbphc",
+            "certificate_hash": "7d997519f8dafdf88ca49b7ff71682c66159337c"
+          }
+        },
+        {
+          "client_id": "478260429298-kfp2ekkopg1b2b5qvcsu84dijnvu6d4m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDllgfjNMN_38IrkMAJ6WFRE_7VYl_1vD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478260429298-kfp2ekkopg1b2b5qvcsu84dijnvu6d4m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
