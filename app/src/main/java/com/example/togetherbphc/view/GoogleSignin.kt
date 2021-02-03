@@ -16,10 +16,12 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.FirebaseUser as FirebaseUser
+import com.example.togetherbphc.viewmodel.GoogleSigninViewModel
 
 class GoogleSignin : AppCompatActivity(), View.OnClickListener {
     private lateinit var fauth: FirebaseAuth;
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val vm = GoogleSigninViewModel()
     lateinit var btn: SignInButton
     lateinit var progressBar: ProgressBar
     companion object{
@@ -32,6 +34,7 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_google_signin)
         btn = findViewById(R.id.google_button);
         progressBar = findViewById(R.id.progressBar);
+
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -54,11 +57,6 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-    private fun  isBitsmail(user: FirebaseUser): Boolean {
-        val emailId = user.email.toString()
-        val pattern = Regex("^\\w+@hyderabad\\.bits-pilani\\.ac\\.in\$")
-        return pattern.matches(emailId)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,7 +111,7 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         progressBar.visibility = View.GONE
         if (user != null) {
-            if(isBitsmail(user)) {
+            if(vm.isBitsmail(user)) {
                 Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java) // (1) (2)
                 startActivity(intent)
