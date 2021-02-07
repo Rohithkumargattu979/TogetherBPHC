@@ -18,9 +18,10 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var mGoogleSignInClient: GoogleSignInClient
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,13 +42,12 @@ class MainActivity : AppCompatActivity() {
                 .requestEmail()
                 .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        logout.setOnClickListener {
+            Logout()
+        }
     }
 
-    fun logout(view: View) {
-        if(view.id == R.id.logout)
-        {
-            //...
-        }
+    fun Logout() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, object: OnCompleteListener<Void> {
                     override fun onComplete(@NonNull task: Task<Void>) {
@@ -60,4 +60,6 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "You are Logged out", Toast.LENGTH_SHORT).show()
         finish()
     }
+
+
 }
