@@ -1,22 +1,27 @@
 package com.example.togetherbphc.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.appcompat.app.AppCompatActivity
 import com.example.togetherbphc.R
+import com.example.togetherbphc.constants.Constants
+import com.example.togetherbphc.constants.Constants.Companion.RC_SIGN_IN
+import com.example.togetherbphc.viewmodel.GoogleSigninViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.FirebaseUser as FirebaseUser
-import com.example.togetherbphc.viewmodel.GoogleSigninViewModel
+import kotlin.properties.Delegates
 
 class GoogleSignin : AppCompatActivity(), View.OnClickListener {
     private lateinit var fauth: FirebaseAuth;
@@ -24,10 +29,7 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
     private val vm = GoogleSigninViewModel()
     lateinit var btn: SignInButton
     lateinit var progressBar: ProgressBar
-    companion object{
-        private const val TAG = "GoogleSignin"
-        private const val RC_SIGN_IN = 999
-    }
+    var newuser by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,11 +70,11 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                Log.d(Constants.TAG, "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
+                Log.w(Constants.TAG, "Google sign in failed", e)
                 // ...
             }
         }
@@ -84,12 +86,23 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
+                    Log.d(Constants.TAG, "signInWithCredential:success")
+                    newuser = task.result!!.additionalUserInfo!!.isNewUser
                     val user = fauth.currentUser
+                    if(newuser)
+                    {
+                        progressBar.visibility = View.GONE
+                        if(vm.isBitsmail(user))
+                        {
+                            val intent = Intent(this, Register::class.java) // (1) (2)
+                            startActivity(intent)
+                        }
+                    }
+                    else
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Log.w(Constants.TAG, "signInWithCredential:failure", task.exception)
                     // ...
                    //Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_SHORT).show()
@@ -121,6 +134,29 @@ class GoogleSignin : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+   /* fun checkEmailExists(user: FirebaseUser) {
+       val email = user.email.toString()
+        fauth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
+            Log.d(Constants.TAG, "" + task.result!!.signInMethods!!.size)
+            if (task.result!!.signInMethods!!.size == 0) {
+                // email not existed
+                val intent = Intent(this, Register::class.java) // (1) (2)
+                startActivity(intent)
+            } else {
+                // email existed
+
+            }
+        }.addOnFailureListener(object : OnFailureListener {
+            override fun onFailure(@NonNull e: Exception) {
+                e.printStackTrace()
+            }
+        })
+
+    }*/
+
+
+
 
 
 
