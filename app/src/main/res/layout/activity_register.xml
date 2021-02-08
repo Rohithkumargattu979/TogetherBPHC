@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You aren't alone!"
+        android:text="Enter Your Details"
         android:textColor="@color/black"
         android:textSize="25dp"
         android:layout_marginTop="20dp"
@@ -66,7 +66,6 @@
                 android:layout_marginLeft="150dp"/>
 
         </RelativeLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,12 +78,61 @@
                 android:id="@+id/idno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ID Number"
+                android:hint="BITS ID Number"
                 android:textColor="@color/black"
                 android:inputType="text">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/black"
+            android:textColorHint="#696969"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/idfb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Facebook URL"
+                android:textColor="@color/black"
+                android:inputType="text">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/black"
+            android:textColorHint="#696969"
+            app:hintTextColor="@color/black"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/idinsta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Instagram URL"
+                android:textColor="@color/black"
+                android:inputType="text">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Date Of Birth"/>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dobbtn"
             android:layout_width="wrap_content"
@@ -92,16 +140,9 @@
             android:backgroundTint="#010685"
             android:layout_gravity="center"
             android:textColor="@color/white"
+            android:layout_marginLeft="200dp"
             android:text="Date of Birth"/>
-
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:visibility="invisible"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+    </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,15 +158,15 @@
             android:id="@+id/hobby1"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="Hobby1"/>
+            android:text="Cooking"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/hobby2"
             android:textColor="@color/black"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="130dp"
             android:textSize="18sp"
-            android:text="Hobby2"/>
+            android:text="Photography"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,7 +174,7 @@
             android:textColor="@color/black"
             android:layout_marginLeft="300dp"
             android:textSize="18sp"
-            android:text="Hobby3"/>
+            android:text="Poetry"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,7 +182,7 @@
             android:textColor="@color/black"
             android:layout_marginTop="50dp"
             android:textSize="18sp"
-            android:text="Hobby4"/>
+            android:text="Meditation"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -150,25 +191,28 @@
             android:layout_marginLeft="150dp"
             android:layout_marginTop="50dp"
             android:textSize="18sp"
-            android:text="Hobby5"/>
-    </RelativeLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:boxStrokeColor="@color/black"
-        android:textColorHint="#696969"
-        app:hintTextColor="@color/black"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/hobbyother"
-            android:layout_width="150dp"
+            android:text="Sports"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Others"
-            android:textColor="@color/black"
-            android:inputType="text">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
+            app:boxStrokeColor="@color/black"
+            android:textColorHint="#696969"
+            app:hintTextColor="@color/black"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="250dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hobbyother"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:hint="Others"
+                android:textColor="@color/black"
+                android:inputType="text">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+
 
     <Button
         android:layout_width="wrap_content"

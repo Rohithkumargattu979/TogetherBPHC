@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.togetherbphc.R
+import com.example.togetherbphc.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,10 +22,13 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+        //setContentView(R.layout.activity_main)
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
 
@@ -37,18 +41,13 @@ class MainActivity : AppCompatActivity() {
         )
         navView.setupWithNavController(navController)
         // google
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        /*val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        logout.setOnClickListener {
-            Logout()
-        }
-    }
-
-    fun Logout() {
-        mGoogleSignInClient.signOut()
+        var mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        binding.logout.setOnClickListener {
+            mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, object: OnCompleteListener<Void> {
                     override fun onComplete(@NonNull task: Task<Void>) {
                         // ...
@@ -57,9 +56,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
-        Toast.makeText(this, "You are Logged out", Toast.LENGTH_SHORT).show()
-        finish()
+            Toast.makeText(this, "You are Logged out", Toast.LENGTH_SHORT).show()
+            finish()
+        }*/
     }
+
+
 
 
 }

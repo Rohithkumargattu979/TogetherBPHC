@@ -18,6 +18,7 @@ import com.example.togetherbphc.R
 import com.example.togetherbphc.R.array.Gender
 import com.example.togetherbphc.constants.Constants
 import com.example.togetherbphc.viewmodel.RegistrationViewModel
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -35,6 +36,8 @@ class Register : AppCompatActivity() {
     private var image: Uri? = null
     private lateinit var username: String
     private lateinit var clgID: String
+    private lateinit var fbID: String
+    private lateinit var instaID: String
     private lateinit var gender: String
     private lateinit var date: String
     private lateinit var imageUrl: String
@@ -44,7 +47,7 @@ class Register : AppCompatActivity() {
     private lateinit var hb4: String
     private lateinit var hb5: String
     private lateinit var hbo: String
-    private lateinit var userID: FirebaseUser
+    private lateinit var userID: String
 
     private var databaseReference: DatabaseReference? = null
     private var firebaseAuth: FirebaseAuth? = null
@@ -55,8 +58,8 @@ class Register : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         val myAdapter = ArrayAdapter<String>(
-                this@Register,
-                android.R.layout.simple_list_item_1, resources.getStringArray(Gender)
+            this@Register,
+            android.R.layout.simple_list_item_1, resources.getStringArray(Gender)
         )
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner1.adapter = myAdapter
@@ -65,10 +68,10 @@ class Register : AppCompatActivity() {
                 AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 gender = spinner1.selectedItem.toString();
             }
@@ -86,17 +89,17 @@ class Register : AppCompatActivity() {
         dobbtn.text = vm.dateFormat.format(vm.now.time)
         dobbtn.setOnClickListener {
             val datePicker = DatePickerDialog(
-                    this,
-                    { _, year, month, dayOfMonth ->
-                        vm.now.set(Calendar.YEAR, year)
-                        vm.now.set(Calendar.MONTH, month)
-                        vm.now.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        dobbtn.text = vm.dateFormat.format(vm.now.time)
-                        date = dobbtn.text.toString().trim()
-                    },
-                    vm.now.get(Calendar.YEAR),
-                    vm.now.get(Calendar.MONTH),
-                    vm.now.get(Calendar.DAY_OF_MONTH)
+                this,
+                { _, year, month, dayOfMonth ->
+                    vm.now.set(Calendar.YEAR, year)
+                    vm.now.set(Calendar.MONTH, month)
+                    vm.now.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    dobbtn.text = vm.dateFormat.format(vm.now.time)
+                    date = dobbtn.text.toString().trim()
+                },
+                vm.now.get(Calendar.YEAR),
+                vm.now.get(Calendar.MONTH),
+                vm.now.get(Calendar.DAY_OF_MONTH)
             )
             datePicker.show()
         }
@@ -105,12 +108,13 @@ class Register : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         databaseReference = FirebaseDatabase.getInstance().getReference("users")
         storageReference = FirebaseStorage.getInstance().reference
-        userID = firebaseAuth!!.currentUser!!
+        userID = firebaseAuth!!.currentUser!!.uid
 
 
 
         profpic.setOnClickListener {
-            val openGalleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val openGalleryIntent = Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(openGalleryIntent, 1000)
         }
         // sign up
@@ -124,16 +128,28 @@ class Register : AppCompatActivity() {
             fstore = FirebaseFirestore.getInstance()
             username = userName.text.toString().trim()
             clgID = idno.text.toString().trim()
+            fbID = idfb.text.toString().trim()
+            instaID = idinsta.text.toString().trim()
             if (username.isEmpty()) {
                 userName.error = "Username cannot be empty"
                 return@setOnClickListener
-            } else if (clgID.isEmpty()) {
+            }
+            else if (clgID.isEmpty()) {
                 idno.error = "ID number cannot be empty"
                 return@setOnClickListener
             }
+            else if(fbID.isEmpty())
+            {
+                idfb.error = "Facebook URL cannot be empty"
+                return@setOnClickListener
+            }
+            else if(instaID.isEmpty())
+            {
+                idinsta.error = "Instagram URL cannot be empty"
+                return@setOnClickListener
+            }
 
-            progressBar.visibility = View.VISIBLE
-            val documentReference: DocumentReference = fstore!!.collection("users").document(userID.toString())
+            val documentReference: DocumentReference = fstore!!.collection("users").document(userID)
            /* storageReference!!.child(firebaseAuth!!.uid + Constants.PATH).putFile(image!!)
                     .addOnSuccessListener {
                         val task = it.storage.downloadUrl
@@ -146,6 +162,8 @@ class Register : AppCompatActivity() {
                             map1["BITS_ID"] = clgID
                             map1["DOB"] = date
                             map1["prof_img"] = imageUrl
+                            map1["FB"] = fbID
+                            map1["Insta"] = instaID
 
                             if(hobby1.isChecked)
                             {
@@ -185,19 +203,19 @@ class Register : AppCompatActivity() {
 
                             documentReference.set(map1).addOnSuccessListener {
                                 Log.d(
-                                        Constants.TAG,
-                                        "onSuccess: user Profile is created for $userID"
+                                    Constants.TAG,
+                                    "onSuccess: user Profile is created for $userID"
                                 )
                             }.addOnFailureListener { e ->
                                 Log.d(
-                                        Constants.TAG,
-                                        "onFailure: $e"
+                                    Constants.TAG,
+                                    "onFailure: $e"
                                 )
                             }
 
                             val intent = Intent(this, MainActivity::class.java) // (1) (2)
                             startActivity(intent)
-                            progressBar.visibility = View.GONE
+
                         }
 
 
@@ -221,7 +239,7 @@ class Register : AppCompatActivity() {
         val fileRef = storageReference!!.child("users/" + firebaseAuth!!.currentUser!!.uid + "/profile.jpg")
         fileRef.putFile(imageUri!!).addOnSuccessListener {
             fileRef.downloadUrl.addOnSuccessListener { uri -> Picasso.get().load(uri)} }
-                .addOnFailureListener { Toast.makeText(applicationContext, "Failed.", Toast.LENGTH_SHORT).show() }
+            .addOnFailureListener { Toast.makeText(applicationContext, "Failed.", Toast.LENGTH_SHORT).show() }
         imageUrl = fileRef.downloadUrl.toString().trim()
     }
 
