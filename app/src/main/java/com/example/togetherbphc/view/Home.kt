@@ -1,11 +1,17 @@
 package com.example.togetherbphc.view
 
 import android.os.Bundle
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.togetherbphc.R
+import com.example.togetherbphc.model.myadapter
+import com.example.togetherbphc.model.searchmodel
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.FirebaseDatabase
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +27,8 @@ class Home : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var recview: RecyclerView? = null
+    var adapter: myadapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +42,62 @@ class Home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        recview = view.findViewById(R.id.recview) as RecyclerView
+        recview!!.layoutManager = LinearLayoutManager(activity)
 
+        val options: FirebaseRecyclerOptions<searchmodel?> = FirebaseRecyclerOptions.Builder<searchmodel>()
+            .setQuery(FirebaseDatabase.getInstance().reference.child("users"),
+                searchmodel::class.java)
+            .build()
+
+        adapter = myadapter(options)
+        recview!!.adapter = adapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter!!.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter!!.stopListening()
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.searchmenu, menu)
+        val item: MenuItem = menu.findItem(R.id.search)
+        val searchView: SearchView = item.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String?): Boolean {
+                processsearch(s)
+                return false
+            }
+
+            override fun onQueryTextChange(s: String?): Boolean {
+                processsearch(s)
+                return false
+            }
+        })
+        return super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    private fun processsearch(s: String?) {
+        val options: FirebaseRecyclerOptions<searchmodel?> = FirebaseRecyclerOptions.Builder<searchmodel>()
+            .setQuery(FirebaseDatabase.getInstance().reference.child("users")
+                .orderByChild("UserName").startAt(s).endAt(s + "\uf8ff"),
+                searchmodel::class.java)
+            .build()
+        adapter = myadapter(options)
+        adapter!!.startListening()
+        recview!!.adapter = adapter
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

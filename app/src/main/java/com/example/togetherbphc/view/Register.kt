@@ -238,7 +238,7 @@ class Register : AppCompatActivity() {
         // upload image to firebase storage
         val fileRef = storageReference!!.child("users/" + firebaseAuth!!.currentUser!!.uid + "/profile.jpg")
         fileRef.putFile(imageUri!!).addOnSuccessListener {
-            fileRef.downloadUrl.addOnSuccessListener { uri -> Picasso.get().load(uri)} }
+            fileRef.downloadUrl.addOnSuccessListener { uri -> Picasso.get().load(uri)}}
             .addOnFailureListener { Toast.makeText(applicationContext, "Failed.", Toast.LENGTH_SHORT).show() }
         imageUrl = fileRef.downloadUrl.toString().trim()
     }

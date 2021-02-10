@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/singlerow"
     app:cardCornerRadius="5dp"
     android:elevation="5dp"
     app:cardUseCompatPadding="true">
@@ -10,6 +11,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:background="@color/white"
         android:padding="15dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -28,8 +31,8 @@
             android:id="@+id/nametext"
             android:text="Name"
             android:textStyle="bold"
-            android:textSize="25sp"
-            android:textColor="#000"
+            android:textSize="14sp"
+            android:textColor="@color/black"
             android:layout_toRightOf="@id/img1"
             android:layout_marginLeft="10dp"/>
 
@@ -38,8 +41,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/idtext"
             android:text="BITS ID"
-            android:textSize="25sp"
-            android:textColor="#000"
+            android:textSize="14sp"
+            android:textColor="@color/black"
             android:layout_toRightOf="@id/img1"
             android:layout_below="@id/nametext"
             android:layout_marginLeft="10dp"/>
@@ -50,8 +53,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/gendertext"
             android:text="Gender"
-            android:textSize="25sp"
-            android:textColor="#000"
+            android:textSize="14sp"
+            android:textColor="@color/black"
             android:layout_toRightOf="@id/img1"
             android:layout_below="@id/idtext"
             android:layout_marginLeft="10dp"/>

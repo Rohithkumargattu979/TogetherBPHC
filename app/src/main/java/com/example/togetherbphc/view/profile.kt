@@ -81,9 +81,9 @@ class profile : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance()
         userID = firebaseAuth!!.currentUser!!.uid
-        fstore = FirebaseFirestore.getInstance();
+        fstore = FirebaseFirestore.getInstance()
         databaseReference = FirebaseDatabase.getInstance().reference
         storageReference = FirebaseStorage.getInstance().reference
 
