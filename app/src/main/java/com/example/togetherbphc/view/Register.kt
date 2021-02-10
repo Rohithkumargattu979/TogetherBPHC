@@ -172,16 +172,23 @@ class Register : AppCompatActivity() {
                                 hb1  = hobby1.text.toString().trim()
                                 map1["Hobby1"] = hb1
                             }
+                            else{
+                                map1["Hobby1"] =""
+                            }
                             if(hobby2.isChecked)
                             {
                                 hb2  = hobby2.text.toString().trim()
                                 map1["Hobby2"] = hb2
-
+                            }else{
+                                map1["Hobby2"] =""
                             }
                             if(hobby3.isChecked)
                             {
                                 hb3  = hobby3.text.toString().trim()
                                 map1["Hobby3"] = hb3
+                            }
+                            else{
+                                map1["Hobby3"] =""
                             }
                             if(hobby4.isChecked)
                             {
@@ -189,15 +196,24 @@ class Register : AppCompatActivity() {
                                 map1["Hobby4"] = hb4
 
                             }
+                            else{
+                                map1["Hobby4"] =""
+                            }
                             if(hobby5.isChecked)
                             {
                                 hb5  = hobby5.text.toString().trim()
                                 map1["Hobby5"] = hb5
                             }
+                            else{
+                                map1["Hobby5"] =""
+                            }
                             hbo = hobbyother.text.toString().trim()
                             if(hbo.isNotEmpty())
                             {
                                 map1["HobbyOther"] = hbo
+                            }
+                            else{
+                                map1["HobbyOther"] =""
                             }
 
 

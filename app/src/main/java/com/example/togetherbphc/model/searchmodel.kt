@@ -11,8 +11,6 @@
     var Gender: String? = null
     var prof_img: String? = null
     var BITS_ID: String? = null
-        private var storageReference: StorageReference? = null
-        private var firebaseAuth: FirebaseAuth? = null
 
 
     internal constructor() {}

@@ -2,11 +2,13 @@ package com.example.togetherbphc.view
 
 import android.os.Bundle
 import android.view.*
+import android.widget.CheckBox
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.togetherbphc.R
+import com.example.togetherbphc.model.ProfileModel
 import com.example.togetherbphc.model.myadapter
 import com.example.togetherbphc.model.searchmodel
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -29,6 +31,7 @@ class Home : Fragment() {
     private var param2: String? = null
     var recview: RecyclerView? = null
     var adapter: myadapter? = null
+    var fcheck: CheckBox? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +54,9 @@ class Home : Fragment() {
         recview = view.findViewById(R.id.recview) as RecyclerView
         recview!!.layoutManager = LinearLayoutManager(activity)
 
-        val options: FirebaseRecyclerOptions<searchmodel?> = FirebaseRecyclerOptions.Builder<searchmodel>()
+        val options: FirebaseRecyclerOptions<ProfileModel?> = FirebaseRecyclerOptions.Builder<ProfileModel>()
             .setQuery(FirebaseDatabase.getInstance().reference.child("users"),
-                searchmodel::class.java)
+                ProfileModel::class.java)
             .build()
 
         adapter = myadapter(options)
@@ -89,10 +92,10 @@ class Home : Fragment() {
 
 
     private fun processsearch(s: String?) {
-        val options: FirebaseRecyclerOptions<searchmodel?> = FirebaseRecyclerOptions.Builder<searchmodel>()
+        val options: FirebaseRecyclerOptions<ProfileModel?> = FirebaseRecyclerOptions.Builder<ProfileModel>()
             .setQuery(FirebaseDatabase.getInstance().reference.child("users")
                 .orderByChild("UserName").startAt(s).endAt(s + "\uf8ff"),
-                searchmodel::class.java)
+                ProfileModel::class.java)
             .build()
         adapter = myadapter(options)
         adapter!!.startListening()

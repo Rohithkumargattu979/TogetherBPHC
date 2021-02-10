@@ -76,7 +76,6 @@ class profile : Fragment() {
 
         // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_profile, container, false)
 
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -96,17 +95,6 @@ class profile : Fragment() {
                 .load(uri)
                 .into(binding.profileImage)
         }
-      /*  val uidRef: DatabaseReference = databaseReference!!.child("users").child(userID!!)
-        uidRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })*/
 
         val docRef: DocumentReference = fstore!!.collection("users").document(userID!!)
         docRef.addSnapshotListener(EventListener<DocumentSnapshot?> { snapshot, e ->
