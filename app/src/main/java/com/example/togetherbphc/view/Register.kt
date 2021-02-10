@@ -18,6 +18,7 @@ import com.example.togetherbphc.R
 import com.example.togetherbphc.R.array.Gender
 import com.example.togetherbphc.constants.Constants
 import com.example.togetherbphc.viewmodel.RegistrationViewModel
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -161,7 +163,7 @@ class Register : AppCompatActivity() {
                             map1["Gender"] = gender
                             map1["BITS_ID"] = clgID
                             map1["DOB"] = date
-                            map1["prof_img"] = imageUrl
+                            //map1["prof_img"] = imageUrl
                             map1["FB"] = fbID
                             map1["Insta"] = instaID
 
@@ -238,12 +240,26 @@ class Register : AppCompatActivity() {
         // upload image to firebase storage
         val fileRef = storageReference!!.child("users/" + firebaseAuth!!.currentUser!!.uid + "/profile.jpg")
         fileRef.putFile(imageUri!!).addOnSuccessListener {
-            fileRef.downloadUrl.addOnSuccessListener { uri -> Picasso.get().load(uri)}}
-            .addOnFailureListener { Toast.makeText(applicationContext, "Failed.", Toast.LENGTH_SHORT).show() }
-        imageUrl = fileRef.downloadUrl.toString().trim()
-    }
+                fileRef.downloadUrl.addOnSuccessListener { uri ->
+                    imageUrl = uri.toString()
+                    databaseReference!!.child(firebaseAuth!!.uid!!).child("prof_img").setValue(imageUrl)
+                        .addOnSuccessListener {
+                            Toast.makeText(this@Register,
+                                "Success Uploading",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                }
+
+
+            }
+
+            //fileRef.downloadUrl.addOnSuccessListener { uri -> Picasso.get().load(uri)}
 
         }
+
+    }
+
+
 
 
 
